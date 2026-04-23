@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 
+import { environment } from '../environments/environment';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -11,4 +13,5 @@ import { LucideAngularModule } from 'lucide-angular';
 })
 export class AppComponent {
   readonly appName = 'TaskFlow';
+  readonly apiDocsUrl = `${environment.apiBaseUrl}/docs`;
 }
