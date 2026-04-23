@@ -1,0 +1,70 @@
+<div
+  class="group relative bg-white border border-slate-200/70 rounded-2xl shadow-soft hover:shadow-elevated hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-200 overflow-hidden animate-fade-in-up"
+>
+  <span
+    class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b"
+    [class]="accentClass"
+  ></span>
+
+  <div class="flex flex-col h-full gap-3 p-5 pl-6">
+    <div class="flex items-start justify-between gap-3">
+      <h3
+        class="font-semibold text-slate-900 leading-snug line-clamp-2 flex-1 group-hover:text-brand-700 transition-colors"
+      >
+        {{ task.title }}
+      </h3>
+      <ui-badge [variant]="task.status">
+        {{ statusLabel[task.status] }}
+      </ui-badge>
+    </div>
+
+    <p
+      *ngIf="task.description"
+      class="text-sm text-slate-600 line-clamp-2 leading-relaxed"
+    >
+      {{ task.description }}
+    </p>
+
+    <p *ngIf="!task.description" class="text-sm text-slate-400 italic">
+      No description provided.
+    </p>
+
+    <div class="flex items-center gap-1.5 text-xs text-slate-500 pt-1 mt-auto">
+      <lucide-icon name="calendar" [size]="13" [strokeWidth]="2" />
+      <span class="font-medium">{{ formatDate(task.createdAt) }}</span>
+      <span class="mx-1 text-slate-300">·</span>
+      <span>{{ relativeTime(task.createdAt) }}</span>
+    </div>
+
+    <div class="flex items-center gap-2 pt-3 border-t border-slate-100">
+      <button
+        type="button"
+        (click)="cycleStatus()"
+        class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition"
+      >
+        <lucide-icon name="arrow-right" [size]="13" [strokeWidth]="2.5" />
+        {{ nextStatusLabel }}
+      </button>
+
+      <button
+        type="button"
+        (click)="edit()"
+        class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition"
+      >
+        <lucide-icon name="pencil" [size]="13" />
+        Edit
+      </button>
+
+      <div class="flex-1"></div>
+
+      <button
+        type="button"
+        (click)="remove()"
+        class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition"
+        aria-label="Delete task"
+      >
+        <lucide-icon name="trash-2" [size]="15" />
+      </button>
+    </div>
+  </div>
+</div>

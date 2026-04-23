@@ -1,0 +1,13 @@
+<button
+  [type]="type"
+  [disabled]="disabled || loading"
+  [class]="classes"
+>
+  <lucide-icon
+    *ngIf="loading"
+    name="loader-circle"
+    [size]="16"
+    class="animate-spin"
+  />
+  <ng-content />
+</button>

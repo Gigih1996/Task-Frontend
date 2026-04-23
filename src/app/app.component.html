@@ -1,0 +1,61 @@
+<div class="min-h-screen flex flex-col">
+  <header
+    class="sticky top-0 z-40 bg-white/75 backdrop-blur-xl border-b border-slate-200/70"
+  >
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
+    >
+      <a routerLink="/tasks" class="flex items-center gap-2.5 group">
+        <span
+          class="relative inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-brand-glow group-hover:scale-105 transition-transform"
+        >
+          <lucide-icon name="check-check" [size]="18" [strokeWidth]="2.5" />
+          <span
+            class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white"
+          ></span>
+        </span>
+        <div class="flex flex-col leading-tight">
+          <span class="font-bold tracking-tight text-slate-900">
+            {{ appName }}
+          </span>
+          <span
+            class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest"
+          >
+            Task Manager
+          </span>
+        </div>
+      </a>
+
+      <nav class="flex items-center gap-2">
+        <a
+          routerLink="/tasks"
+          class="inline-flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+        >
+          <lucide-icon name="list-todo" [size]="16" />
+          <span class="hidden sm:inline">Tasks</span>
+        </a>
+        <a
+          href="http://localhost:3000/api/docs"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+        >
+          <lucide-icon name="file-text" [size]="16" />
+          <span class="hidden sm:inline">API Docs</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <router-outlet />
+  </main>
+
+  <footer class="py-6 border-t border-slate-200/70 bg-white/50">
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-slate-500 text-center"
+    >
+      © 2026 {{ appName }} · Built with Angular, NestJS & Prisma
+    </div>
+  </footer>
+</div>

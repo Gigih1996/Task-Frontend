@@ -1,0 +1,368 @@
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+  <div
+    class="relative overflow-hidden rounded-3xl mb-8 bg-gradient-to-br from-slate-900 via-brand-800 to-brand-600 text-white shadow-elevated"
+  >
+    <div
+      class="absolute inset-0 opacity-20"
+      style="
+        background-image:
+          radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.25) 0, transparent 40%),
+          radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.18) 0, transparent 50%);
+      "
+    ></div>
+
+    <div
+      class="relative px-6 sm:px-10 py-10 md:py-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+    >
+      <div class="max-w-2xl">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-semibold uppercase tracking-wider ring-1 ring-white/20"
+        >
+          <lucide-icon name="sparkles" [size]="12" />
+          Dashboard
+        </div>
+        <h1 class="mt-4 text-3xl md:text-4xl font-bold tracking-tight leading-tight">
+          Welcome back 👋
+        </h1>
+        <p class="mt-2 text-white/80 text-sm md:text-base max-w-xl">
+          You have
+          <span class="font-semibold text-white">{{ tasks().length }}</span>
+          {{ tasks().length === 1 ? 'task' : 'tasks' }} in your board. Keep shipping.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3 w-full lg:w-auto">
+        <div class="flex items-center gap-3 justify-end">
+          <div class="text-right lg:min-w-40">
+            <p
+              class="text-xs font-semibold text-white/70 uppercase tracking-wider"
+            >
+              Completion
+            </p>
+            <p class="text-3xl font-bold tabular-nums">
+              {{ completionRate() }}%
+            </p>
+          </div>
+          <div class="relative w-20 h-20">
+            <svg viewBox="0 0 36 36" class="w-20 h-20 -rotate-90">
+              <circle
+                cx="18"
+                cy="18"
+                r="15.9"
+                fill="none"
+                stroke="rgba(255,255,255,0.2)"
+                stroke-width="3"
+              />
+              <circle
+                cx="18"
+                cy="18"
+                r="15.9"
+                fill="none"
+                stroke="white"
+                stroke-width="3"
+                stroke-linecap="round"
+                [attr.stroke-dasharray]="100"
+                [attr.stroke-dashoffset]="100 - completionRate()"
+                pathLength="100"
+                class="transition-all duration-500"
+              />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <lucide-icon name="circle-check" [size]="22" />
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="openCreate()"
+          class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white text-slate-900 font-semibold text-sm shadow-soft hover:bg-slate-100 transition"
+        >
+          <lucide-icon name="plus" [size]="16" [strokeWidth]="2.5" />
+          New Task
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-8">
+    <ui-card>
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            Total
+          </p>
+          <p class="text-2xl font-bold text-slate-900 mt-1 tabular-nums">
+            {{ tasks().length }}
+          </p>
+        </div>
+        <div
+          class="w-10 h-10 shrink-0 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"
+        >
+          <lucide-icon name="file-text" [size]="18" />
+        </div>
+      </div>
+    </ui-card>
+
+    <ui-card>
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            To Do
+          </p>
+          <p class="text-2xl font-bold text-slate-900 mt-1 tabular-nums">
+            {{ countByStatus('todo') }}
+          </p>
+        </div>
+        <div
+          class="w-10 h-10 shrink-0 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center"
+        >
+          <lucide-icon name="inbox" [size]="18" />
+        </div>
+      </div>
+    </ui-card>
+
+    <ui-card>
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            In Progress
+          </p>
+          <p class="text-2xl font-bold text-slate-900 mt-1 tabular-nums">
+            {{ countByStatus('in_progress') }}
+          </p>
+        </div>
+        <div
+          class="w-10 h-10 shrink-0 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+        >
+          <lucide-icon name="clock" [size]="18" />
+        </div>
+      </div>
+    </ui-card>
+
+    <ui-card>
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            Done
+          </p>
+          <p class="text-2xl font-bold text-slate-900 mt-1 tabular-nums">
+            {{ countByStatus('done') }}
+          </p>
+        </div>
+        <div
+          class="w-10 h-10 shrink-0 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"
+        >
+          <lucide-icon name="circle-check" [size]="18" />
+        </div>
+      </div>
+    </ui-card>
+  </div>
+
+  <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 mb-6">
+    <div class="relative flex-1 max-w-md">
+      <lucide-icon
+        name="search"
+        [size]="16"
+        class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+      />
+      <input
+        type="text"
+        [ngModel]="search()"
+        (ngModelChange)="setSearch($event)"
+        placeholder="Search tasks by title or description…"
+        class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-10 py-2.5 text-sm placeholder:text-slate-400 shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition"
+      />
+      <button
+        *ngIf="search()"
+        type="button"
+        (click)="clearSearch()"
+        class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition"
+        aria-label="Clear search"
+      >
+        <lucide-icon name="x" [size]="14" />
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <div class="relative">
+        <select
+          [ngModel]="sort()"
+          (ngModelChange)="setSort($event)"
+          class="appearance-none bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2.5 text-sm font-medium text-slate-700 shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 cursor-pointer transition"
+        >
+          <option *ngFor="let opt of sortOptions" [value]="opt.value">
+            {{ opt.label }}
+          </option>
+        </select>
+        <lucide-icon
+          name="arrow-up-down"
+          [size]="14"
+          class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        />
+      </div>
+      <button
+        type="button"
+        (click)="load()"
+        class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-soft transition"
+        aria-label="Refresh"
+        title="Refresh"
+      >
+        <lucide-icon name="refresh-cw" [size]="15" />
+      </button>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2 overflow-x-auto scrollbar-thin pb-2 mb-6">
+    <button
+      *ngFor="let f of filters"
+      (click)="setFilter(f.value)"
+      class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition border"
+      [class.bg-slate-900]="filter() === f.value"
+      [class.text-white]="filter() === f.value"
+      [class.border-slate-900]="filter() === f.value"
+      [class.shadow-soft]="filter() === f.value"
+      [class.bg-white]="filter() !== f.value"
+      [class.text-slate-600]="filter() !== f.value"
+      [class.border-slate-200]="filter() !== f.value"
+      [class.hover:bg-slate-50]="filter() !== f.value"
+    >
+      <lucide-icon [name]="f.icon" [size]="14" />
+      {{ f.label }}
+      <span
+        class="ml-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-semibold tabular-nums"
+        [ngClass]="
+          filter() === f.value
+            ? 'bg-white/20 text-white'
+            : 'bg-slate-100 text-slate-500'
+        "
+      >
+        {{ f.value === 'all' ? tasks().length : countByStatus(f.value) }}
+      </span>
+    </button>
+  </div>
+
+  <div
+    *ngIf="error()"
+    class="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-sm text-rose-700 flex items-start gap-3 animate-fade-in"
+  >
+    <lucide-icon
+      name="alert-triangle"
+      [size]="20"
+      class="flex-shrink-0 mt-0.5"
+    />
+    <span class="flex-1">{{ error() }}</span>
+    <button
+      (click)="load()"
+      class="inline-flex items-center gap-1.5 text-xs font-semibold hover:underline"
+    >
+      <lucide-icon name="refresh-cw" [size]="12" />
+      Retry
+    </button>
+  </div>
+
+  <div
+    *ngIf="loading()"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"
+  >
+    <div
+      *ngFor="let i of [1, 2, 3, 4, 5, 6]"
+      class="bg-white border border-slate-200/70 rounded-2xl shadow-soft p-5 space-y-3"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="skeleton h-5 w-2/3 rounded-md"></div>
+        <div class="skeleton h-5 w-16 rounded-full"></div>
+      </div>
+      <div class="skeleton h-3 w-full rounded"></div>
+      <div class="skeleton h-3 w-4/5 rounded"></div>
+      <div class="skeleton h-3 w-24 rounded"></div>
+      <div class="pt-3 border-t border-slate-100 flex gap-2">
+        <div class="skeleton h-7 w-24 rounded-lg"></div>
+        <div class="skeleton h-7 w-16 rounded-lg"></div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!loading() && filteredTasks().length === 0 && !error()"
+    class="text-center py-20 px-4 animate-fade-in"
+  >
+    <div
+      class="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-br from-brand-100 to-brand-50 text-brand-600 flex items-center justify-center mb-5 shadow-soft"
+    >
+      <lucide-icon name="inbox" [size]="36" [strokeWidth]="1.5" />
+    </div>
+    <h3 class="text-lg font-semibold text-slate-900">
+      {{
+        search() || filter() !== 'all'
+          ? 'No tasks found'
+          : 'No tasks yet'
+      }}
+    </h3>
+    <p class="text-sm text-slate-500 mt-1.5 max-w-sm mx-auto">
+      {{
+        search() || filter() !== 'all'
+          ? 'Try adjusting your search or filter.'
+          : 'Start organizing your work by creating your first task.'
+      }}
+    </p>
+    <div class="mt-6 flex items-center justify-center gap-2">
+      <button
+        *ngIf="search() || filter() !== 'all'"
+        type="button"
+        (click)="clearSearch(); setFilter('all')"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition"
+      >
+        Clear filters
+      </button>
+      <button
+        type="button"
+        (click)="openCreate()"
+        class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-b from-brand-500 to-brand-600 text-white font-semibold text-sm shadow-brand-glow hover:from-brand-600 hover:to-brand-700 transition"
+      >
+        <lucide-icon name="plus" [size]="16" [strokeWidth]="2.5" />
+        Create your first task
+      </button>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!loading() && filteredTasks().length > 0"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"
+  >
+    <app-task-card
+      *ngFor="let task of filteredTasks(); trackBy: trackById"
+      [task]="task"
+      (statusChange)="updateStatus(task.id, $event)"
+      (edited)="openEdit($event)"
+      (deleted)="askDelete($event)"
+    />
+  </div>
+</section>
+
+<app-task-form-modal
+  [open]="formModalOpen()"
+  [mode]="formModalMode()"
+  [task]="editingTask()"
+  (closed)="closeForm()"
+  (created)="onCreated($event)"
+  (updated)="onUpdated($event)"
+/>
+
+<ui-modal
+  [open]="confirmDeleteId() !== null"
+  title="Delete this task?"
+  description="This action cannot be undone. The task will be permanently removed."
+  (closed)="cancelDelete()"
+>
+  <div class="flex items-center justify-end gap-2 mt-2">
+    <ui-button variant="secondary" (click)="cancelDelete()">Cancel</ui-button>
+    <ui-button
+      variant="danger"
+      [loading]="deleting()"
+      (click)="confirmDelete()"
+    >
+      Delete Task
+    </ui-button>
+  </div>
+</ui-modal>

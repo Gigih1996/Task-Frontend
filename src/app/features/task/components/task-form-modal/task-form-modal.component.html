@@ -1,0 +1,138 @@
+<ui-modal
+  [open]="open"
+  [closeOnBackdrop]="!submitting()"
+  [size]="'lg'"
+  (closed)="cancel()"
+>
+  <div class="flex items-start gap-3 mb-6">
+    <div
+      class="w-11 h-11 shrink-0 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white flex items-center justify-center shadow-brand-glow"
+    >
+      <lucide-icon
+        [name]="isEdit ? 'pencil' : 'plus'"
+        [size]="20"
+        [strokeWidth]="2.5"
+      />
+    </div>
+    <div class="flex-1 min-w-0">
+      <h3 class="text-lg font-semibold text-slate-900">
+        {{ isEdit ? 'Edit task' : 'Create a new task' }}
+      </h3>
+      <p class="text-sm text-slate-500 mt-0.5">
+        {{
+          isEdit
+            ? 'Update the details below and save.'
+            : 'Add a new item to your board.'
+        }}
+      </p>
+    </div>
+  </div>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="flex flex-col gap-5"
+    novalidate
+  >
+    <ui-input
+      label="Title"
+      placeholder="e.g. Design landing page hero section"
+      [required]="true"
+      [error]="titleError"
+      formControlName="title"
+    />
+
+    <ui-input
+      label="Description"
+      placeholder="Add more context or acceptance criteria…"
+      type="textarea"
+      [rows]="4"
+      [error]="descriptionError"
+      hint="Optional — describe the task in detail."
+      formControlName="description"
+    />
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium text-slate-700">
+        Status <span class="text-rose-500">*</span>
+      </label>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <button
+          *ngFor="let opt of statusOptions"
+          type="button"
+          (click)="selectStatus(opt.value)"
+          class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left transition"
+          [class.border-brand-500]="form.value.status === opt.value"
+          [class.bg-brand-50]="form.value.status === opt.value"
+          [class.shadow-soft]="form.value.status === opt.value"
+          [class.border-slate-200]="form.value.status !== opt.value"
+          [class.bg-white]="form.value.status !== opt.value"
+          [class.hover:bg-slate-50]="form.value.status !== opt.value"
+          [class.hover:border-slate-300]="form.value.status !== opt.value"
+        >
+          <span
+            class="w-8 h-8 shrink-0 rounded-lg flex items-center justify-center"
+            [class.bg-slate-100]="opt.value === 'todo'"
+            [class.text-slate-600]="opt.value === 'todo'"
+            [class.bg-amber-100]="opt.value === 'in_progress'"
+            [class.text-amber-700]="opt.value === 'in_progress'"
+            [class.bg-emerald-100]="opt.value === 'done'"
+            [class.text-emerald-700]="opt.value === 'done'"
+          >
+            <lucide-icon [name]="statusMeta(opt.value).icon" [size]="15" />
+          </span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-semibold text-slate-900">
+              {{ opt.label }}
+            </span>
+            <span class="block text-[11px] text-slate-500 truncate">
+              {{ statusMeta(opt.value).description }}
+            </span>
+          </span>
+          <span
+            *ngIf="form.value.status === opt.value"
+            class="shrink-0 w-5 h-5 rounded-full bg-brand-600 flex items-center justify-center"
+          >
+            <lucide-icon name="check" [size]="12" class="text-white" />
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div
+      *ngIf="error()"
+      class="p-3 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-700 flex items-start gap-2"
+    >
+      <lucide-icon
+        name="alert-triangle"
+        [size]="16"
+        class="flex-shrink-0 mt-0.5"
+      />
+      <span class="flex-1">{{ error() }}</span>
+    </div>
+
+    <div
+      class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-end gap-2 pt-4 border-t border-slate-100"
+    >
+      <ui-button
+        type="button"
+        variant="secondary"
+        [fullWidth]="true"
+        [disabled]="submitting()"
+        (click)="cancel()"
+      >
+        Cancel
+      </ui-button>
+      <ui-button
+        type="submit"
+        variant="primary"
+        [loading]="submitting()"
+        [disabled]="form.invalid"
+        [fullWidth]="true"
+      >
+        <lucide-icon name="save" [size]="16" *ngIf="!submitting()" />
+        {{ isEdit ? 'Save changes' : 'Create task' }}
+      </ui-button>
+    </div>
+  </form>
+</ui-modal>

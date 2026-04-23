@@ -1,0 +1,38 @@
+<div
+  *ngIf="open"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+    (click)="onBackdrop()"
+  ></div>
+
+  <div
+    class="relative w-full bg-white rounded-2xl shadow-elevated border border-slate-200/70 overflow-hidden max-h-[90vh] flex flex-col animate-in"
+    [class]="sizeClass"
+  >
+    <button
+      type="button"
+      (click)="close()"
+      class="absolute top-3 right-3 w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition z-10"
+      aria-label="Close"
+    >
+      <lucide-icon name="x" [size]="16" />
+    </button>
+
+    <div *ngIf="title || description" class="px-6 pt-6 pb-3 pr-14">
+      <h3 *ngIf="title" class="text-lg font-semibold text-slate-900">
+        {{ title }}
+      </h3>
+      <p *ngIf="description" class="mt-1 text-sm text-slate-500">
+        {{ description }}
+      </p>
+    </div>
+
+    <div class="px-6 py-6 overflow-y-auto scrollbar-thin">
+      <ng-content />
+    </div>
+  </div>
+</div>

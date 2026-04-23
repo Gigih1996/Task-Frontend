@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-1.5 w-full">
+  <label
+    *ngIf="label"
+    class="text-sm font-medium text-slate-700"
+  >
+    {{ label }}
+    <span *ngIf="required" class="text-rose-500">*</span>
+  </label>
+
+  <ng-container *ngIf="type !== 'textarea'; else textareaTpl">
+    <input
+      [type]="type"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [value]="value"
+      (input)="handleInput($any($event.target).value)"
+      (blur)="handleBlur()"
+      class="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:outline-none focus:ring-2 transition"
+      [class.border-slate-200]="!error"
+      [class.border-rose-400]="!!error"
+      [class.focus:border-brand-500]="!error"
+      [class.focus:ring-brand-500]="!error"
+      [class.focus:ring-rose-400]="!!error"
+      [class.opacity-60]="disabled"
+    />
+  </ng-container>
+
+  <ng-template #textareaTpl>
+    <textarea
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [rows]="rows"
+      [value]="value"
+      (input)="handleInput($any($event.target).value)"
+      (blur)="handleBlur()"
+      class="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:outline-none focus:ring-2 transition resize-none"
+      [class.border-slate-200]="!error"
+      [class.border-rose-400]="!!error"
+      [class.focus:border-brand-500]="!error"
+      [class.focus:ring-brand-500]="!error"
+      [class.focus:ring-rose-400]="!!error"
+      [class.opacity-60]="disabled"
+    ></textarea>
+  </ng-template>
+
+  <p *ngIf="error" class="text-xs text-rose-600">{{ error }}</p>
+  <p *ngIf="!error && hint" class="text-xs text-slate-500">{{ hint }}</p>
+</div>

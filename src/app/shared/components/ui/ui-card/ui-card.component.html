@@ -1,0 +1,9 @@
+<div
+  class="relative bg-white border border-slate-200/70 rounded-2xl shadow-soft transition-all duration-200"
+  [class.p-6]="padded"
+  [class.hover:-translate-y-0.5]="hoverable"
+  [class.hover:shadow-elevated]="hoverable"
+  [class.hover:border-slate-300]="hoverable"
+>
+  <ng-content />
+</div>
